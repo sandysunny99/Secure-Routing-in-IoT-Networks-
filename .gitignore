@@ -1,0 +1,8 @@
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+results/debug.txt
+results/test_output.txt
+results/verification.txt
