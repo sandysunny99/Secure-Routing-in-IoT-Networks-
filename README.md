@@ -82,7 +82,11 @@ The interactive menu includes:
 ```powershell
 streamlit run dashboard/app.py
 ```
+For Streamlit Community Cloud deployment, use the root entrypoint:
 
+```text
+streamlit_app.py
+```
 Then open the dashboard in your browser at:
 
 ```text
