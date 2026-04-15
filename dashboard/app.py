@@ -11,11 +11,23 @@ import time
 # Ensure project root is on path
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 
-import streamlit as st
-import plotly.graph_objects as go
-import plotly.express as px
-import pandas as pd
-import networkx as nx
+try:
+    import streamlit as st
+except ModuleNotFoundError as exc:
+    raise ModuleNotFoundError(
+        "Missing dependency 'streamlit'. Install dependencies with 'py -m pip install -r requirements.txt' "
+        "and run the dashboard using 'py -m streamlit run dashboard/app.py'."
+    ) from exc
+
+try:
+    import plotly.graph_objects as go
+    import plotly.express as px
+    import pandas as pd
+    import networkx as nx
+except ModuleNotFoundError as exc:
+    raise ModuleNotFoundError(
+        f"Missing dependency '{exc.name}'. Install dependencies with 'py -m pip install -r requirements.txt'."
+    ) from exc
 
 # ─── Page Configuration ─────────────────────────────────────────
 st.set_page_config(

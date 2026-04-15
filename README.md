@@ -2,159 +2,172 @@
 
 **Contiki-NG Inspired · IoT Network Security · Trust-Based Detection**
 
-A lightweight, demo-focused simulation of RPL (Routing Protocol for Low-Power and Lossy Networks) routing in IoT networks, featuring sinkhole attack simulation and trust-based detection with both terminal visualization and an interactive web dashboard.
+A lightweight Python simulation of RPL (Routing Protocol for Low-Power and Lossy Networks) routing in IoT networks. It demonstrates:
+
+- Normal RPL routing
+- Sinkhole attack behavior
+- Trust-based secure rerouting
+- Terminal visualization with color-coded logs
+- Streamlit dashboard UI
+- CSV export for logs
 
 ---
 
-## 📐 Architecture
+## 📦 Repository contents
 
-```
-┌──────────────────────────────────────────────────┐
-│              run.py (CLI Entry Point)             │
-│        Menu: Normal / Attack / Secure / All       │
-└──────────┬───────────────────────────┬───────────┘
-           │                           │
-  ┌────────▼────────┐       ┌─────────▼──────────┐
-  │  Terminal Logs   │       │  Streamlit Dashboard │
-  │  (Colored CLI)   │       │  (Dark Theme + Plotly)│
-  └────────┬────────┘       └─────────┬──────────┘
-           │                           │
-  ┌────────▼───────────────────────────▼──────────┐
-  │              utils/logger.py                   │
-  │         In-memory log store + CSV export       │
-  └────────┬──────────────────────────────────────┘
-           │
-  ┌────────▼──────────────────────────────────────┐
-  │   core/simulation.py  +  core/security.py     │
-  │   8 nodes · Static RPL · Attack · Detection   │
-  └───────────────────────────────────────────────┘
-```
+- `run.py` — CLI entry point with interactive simulation menu
+- `core/simulation.py` — main RPL simulation engine
+- `core/security.py` — detection, trust scoring, and rerouting logic
+- `dashboard/app.py` — Streamlit dashboard UI
+- `utils/logger.py` — structured logging and CSV export
+- `.streamlit/config.toml` — dashboard theme and server settings
+- `requirements.txt` — required Python packages
+- `launch.bat` — Windows Streamlit launcher
+- `docs/contiki-guide.md` — optional Contiki-NG reference
 
 ---
 
-## 🚀 Quick Start
+## 🎯 Project purpose
 
-### 1. Install Dependencies
+This repository is a research/demo implementation of secure routing in an IoT network using RPL. It simulates routing behavior, models a sinkhole attack, and shows how trust-based detection can protect the network.
 
-```bash
+---
+
+## ✅ Environment requirements
+
+- Python 3.11+ (Windows compatible)
+- `streamlit`
+- `plotly`
+- `pandas`
+- `colorama`
+
+---
+
+## 🧪 Setup (Windows)
+
+Open PowerShell in the project root and run:
+
+```powershell
+python -m venv .venv
+.venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 2. Run Terminal Demo
+If `.venv` already exists, activate it instead:
 
-```bash
+```powershell
+.venv\Scripts\activate
+```
+
+---
+
+## ▶️ Running the project
+
+### Terminal demo
+
+```powershell
 python run.py
 ```
 
-This opens an interactive menu:
-- `[1]` Normal Routing
-- `[2]` Sinkhole Attack
-- `[3]` Secure Routing (Trust-Based)
-- `[4]` Run All (Comparison)
-- `[5]` Export Logs (CSV)
-- `[6]` Launch Web Dashboard
+The interactive menu includes:
+- `1` Normal Routing
+- `2` Sinkhole Attack
+- `3` Secure Routing (Trust-Based)
+- `4` Run All Scenarios
+- `5` Export Logs to CSV
+- `6` Launch Web Dashboard
 
-### 3. Run Web Dashboard
+### Streamlit dashboard
 
-```bash
+```powershell
 streamlit run dashboard/app.py
 ```
 
-Opens at `http://localhost:8501` with dark theme.
+Then open the dashboard in your browser at:
+
+```text
+http://localhost:8501
+```
+
+Or use the Windows launcher:
+
+```powershell
+launch.bat
+```
 
 ---
 
-## 📁 Project Structure
+## 📁 Folder structure
 
 ```
-├── run.py                    # CLI entry point
-├── requirements.txt          # Dependencies (4 packages)
-├── README.md                 # This file
-│
-├── core/
-│   ├── simulation.py         # RPL network simulation
-│   └── security.py           # Detection + trust + rerouting
-│
-├── dashboard/
-│   └── app.py                # Streamlit web dashboard
-│
-├── utils/
-│   └── logger.py             # Colored logging + export
-│
+├── run.py
+├── launch.bat
+├── requirements.txt
+├── README.md
 ├── .streamlit/
-│   └── config.toml           # Dark theme config
-│
+│   └── config.toml
+├── core/
+│   ├── simulation.py
+│   └── security.py
+├── dashboard/
+│   └── app.py
+├── utils/
+│   └── logger.py
 ├── docs/
-│   └── contiki-guide.md      # Optional Contiki-NG reference
-│
-└── results/                  # Generated CSV exports
+│   └── contiki-guide.md
+└── results/
 ```
 
 ---
 
-## 🧪 Simulation Scenarios
+## 🧠 Key components
 
-### 1. Normal Routing 🟢
-- 8 nodes form DODAG via RPL
-- All packets delivered to root
-- Expected PDR: >95%
-
-### 2. Sinkhole Attack 🔴
-- Node 8 advertises fake rank (256) to attract traffic
-- Drops 80% of forwarded packets
-- Expected PDR: <50%
-
-### 3. Secure Routing 🟡
-- Trust-based detection identifies malicious node
-- Traffic rerouted away from attacker
-- Expected PDR: >80%
-
----
-
-## 📊 Dashboard Features
-
-| Panel | Description |
-|-------|-------------|
-| Pipeline Status | Animated workflow: Simulation → Logs → Detection → Dashboard |
-| Network Topology | Interactive Plotly graph with colored nodes and edges |
-| Live Logs | Scrollable, color-coded, filterable by level |
-| Attack Detection | Flagged nodes table with reasons |
-| Trust Scores | Horizontal bar chart with threshold line |
-| Metrics Comparison | PDR charts comparing all scenarios |
-| Export | CSV download of all logs |
+- `core/simulation.py`: constructs the RPL network topology, selects parents, forwards packets, and computes packet delivery ratio (PDR).
+- `core/security.py`: performs rank anomaly detection, trust scoring, and secure rerouting.
+- `dashboard/app.py`: provides the Streamlit dashboard with topology, logs, and metrics.
+- `utils/logger.py`: logs events in memory and exports them to CSV.
 
 ---
 
 ## 🔧 Configuration
 
-Edit constants at the top of `core/simulation.py`:
+Adjust simulation settings in `core/simulation.py`:
 
 | Parameter | Default | Description |
 |-----------|---------|-------------|
 | `NUM_SENSORS` | 6 | Number of sensor nodes |
 | `NUM_ROUNDS` | 20 | Packets per sensor per scenario |
-| `ATTACK_DROP_RATE` | 0.80 | Packet drop probability |
-| `FAKE_RANK` | 256 | Malicious node's fake rank |
-| `DEMO_DELAY` | 0.08 | Seconds between log events |
+| `ATTACK_DROP_RATE` | 0.80 | Sinkhole drop probability |
+| `FAKE_RANK` | 128 | Malicious node's fake advertised rank |
+| `DEMO_DELAY` | 0.08 | Delay for log pacing |
 
 ---
 
-## 🔮 Future Enhancements
+## 📊 Tested validation
 
-- [ ] Machine learning-based anomaly detection
-- [ ] Real-time Contiki-NG log ingestion via serial
-- [ ] Multiple attack types (wormhole, selective forwarding)
-- [ ] Energy consumption modeling
-- [ ] MQTT/CoAP protocol integration
-
----
-
-## 📚 References
-
-- [Contiki-NG](https://github.com/contiki-ng/contiki-ng) — IoT operating system
-- [RFC 6550](https://tools.ietf.org/html/rfc6550) — RPL specification
-- [Cooja Simulator](https://docs.contiki-ng.org/en/develop/doc/tutorials/Cooja-simulations.html)
+- Repository synced with `origin/master`.
+- Latest remote changes pulled successfully.
+- Python dependencies installed into `.venv`.
+- Verified `run_scenario('normal')` executes successfully.
+- Confirmed `streamlit`, `plotly`, `pandas`, and `colorama` import cleanly.
 
 ---
 
-*Built for IoT Security Research · Demo-Focused · Lightweight*
+## 📌 Notes
+
+- `.venv/` is a local Python environment and should not be committed.
+- `results/` stores generated log exports.
+- This project is a research-focused IoT security simulation, not a production system.
+
+---
+
+## 🚀 Future improvements
+
+- Add machine learning-based anomaly detection
+- Add more attack types (wormhole, selective forwarding)
+- Integrate Contiki-NG or Cooja simulation logs
+- Add MQTT/CoAP support
+
+---
+
+*Secure Routing in IoT Networks — ready to run locally on Windows.*

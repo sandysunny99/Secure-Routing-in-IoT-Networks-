@@ -7,11 +7,18 @@ echo   Secure RPL Routing Simulation - Launcher
 echo ========================================================
 echo.
 echo Installing/Verifying dependencies...
-py -m pip install -r requirements.txt >nul 2>&1
+py -m pip install -r requirements.txt
+if %errorlevel% neq 0 (
+    echo.
+    echo Failed to install dependencies. Please check the pip output above.
+    pause
+    exit /b %errorlevel%
+)
 
 echo.
 echo Starting the Streamlit Dashboard...
-echo The dashboard will automatically open in your default browser.
+echo The dashboard should be available at:
+if exist nul (echo http://localhost:8501)
 echo Press CTRL+C in this window to stop the server when you are done.
 echo ========================================================
 echo.
