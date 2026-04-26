@@ -2,6 +2,8 @@
 
 **Contiki-NG Inspired · IoT Network Security · Trust-Based Detection**
 
+**🔴 Live Demo:** [https://sandysunny99-secure-routing-in-iot-network-streamlit-app-jasjth.streamlit.app/](https://sandysunny99-secure-routing-in-iot-network-streamlit-app-jasjth.streamlit.app/)
+
 A lightweight Python simulation of RPL (Routing Protocol for Low-Power and Lossy Networks) routing in IoT networks. It demonstrates:
 
 - Normal RPL routing
