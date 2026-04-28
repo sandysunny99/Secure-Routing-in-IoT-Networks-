@@ -1,6 +1,19 @@
-"""Streamlit app entrypoint for repository deployment."""
+"""Streamlit app entrypoint for Streamlit Cloud deployment.
 
-# Streamlit Cloud and other deployment platforms often expect an app entrypoint
-# at the repository root. Importing the dashboard module executes the Streamlit app.
+Streamlit Cloud expects the entry point at the repository root.
+This file executes the dashboard app by running it as a script via runpy,
+which ensures all module-level Streamlit calls are executed correctly.
+"""
 
-from dashboard import app  # noqa: F401
+import runpy
+import os
+import sys
+
+# Ensure the project root is on the Python path
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+# Execute dashboard/app.py as __main__ so all top-level st.* calls run
+runpy.run_path(
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "dashboard", "app.py"),
+    run_name="__main__",
+)

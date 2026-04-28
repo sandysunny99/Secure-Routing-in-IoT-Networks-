@@ -7,6 +7,7 @@ live logs, attack detection, metrics comparison, and trust scores.
 import sys
 import os
 import time
+import random
 
 # Ensure project root is on path
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
@@ -316,10 +317,9 @@ with st.sidebar:
         else:
             st.session_state.status = "running"
             
-            import random
             progress_bar = st.progress(0, text="Initializing simulation engine...")
             for percent_complete in range(100):
-                import time; time.sleep(random.uniform(0.01, 0.03))
+                time.sleep(random.uniform(0.01, 0.03))
                 progress_bar.progress(percent_complete + 1, text=f"Simulating network traffic... {percent_complete}%")
             progress_bar.empty()
             
@@ -384,12 +384,12 @@ with st.sidebar:
                         log_stream.info(f"Node {log_entry['node_id']} {log_entry['message']}")
                     elif log_entry["level"] == "ALERT":
                         log_stream.error(f"Node {log_entry['node_id']} - {log_entry['message']}")
-                    import time; time.sleep(0.01)
+                    time.sleep(0.01)
                 
                 if attack_type != "None":
                     st.session_state.logs.append({"timestamp": timestamp, "level": "ALERT", "node_id": "Sys", "message": "Connection dropped! Traffic sinkholed."})
                     log_stream.error("Security Engine: Anomaly spotted in packet flow!")
-                    import time; time.sleep(0.2)
+                    time.sleep(0.2)
                 
                 st.success("Simulation Complete!")
                 st.info(f"PDR: {pdr*100:.1f}% | Delivered: {delivered}/{total} | Malicious Nodes: {malicious_nodes}")
@@ -401,7 +401,7 @@ with st.sidebar:
                     "packets_delivered": delivered
                 }
                 
-                import time; time.sleep(1.5)
+                time.sleep(1.5)
                 
             st.rerun()
 
